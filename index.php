@@ -1,3 +1,39 @@
+<?php
+require './dbh.class.php'  ;
+
+
+$db = new Dbh();
+$conn = $db->connect();
+$message = '';
+
+try {
+    // Requête SQL améliorée pour récupérer aussi le nom du statut
+    $stmt = $conn->prepare("SELECT t.*, s.nom_statut AS statut_nom
+                          FROM task t
+                          INNER JOIN statut s ON t.id_statut = s.id_statut");
+    $stmt->execute();
+    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Erreur lors de la récupération des tâches : " . $e->getMessage();
+    $tasks = [];
+}
+
+// Organisation des tâches par statut
+$tasks_par_statut = [
+    'Toutes' => [],
+    'En cours' => [],
+    'Terminées' => [],
+];
+
+foreach ($tasks as $task) {
+    $tasks_par_statut['Toutes'][] = $task;
+    $tasks_par_statut[$task['statut_nom']][] = $task;
+}
+
+var_dump($e) ;
+?> 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,25 +45,44 @@
 </head>
 <body>
 
-    <div class="top">
-        <h1>TaskCollab</h1>
-      <div class="user">
-        <img src="./assets/img/notification.webp" alt="Notifications">
-        <img src="./assets/img/user.webp" alt="User">
-    </div>
-    </div>
+<div class="top">
+    <?php if (isset($_SESSION['user_name'])): ?>
+        <div class="top-content">
+            <p>Bonjour, <?php echo htmlspecialchars($_SESSION['user_name']); ?></p>
+            <div class="nav-item" id="logout-link">
+                <img src="./assets/img/logout.png" alt="Déconnexion">
+                <span>Déconnexion</span>
+            </div>
+        </div>
+    <?php else: ?>
+         <div class="top-content">
+            <img src="./assets/img/logo.png" alt="Logo" class="logo">
+            <h1>TaskCollab</h1>
+        </div>
+        <div class="search-container">
+            <input type="search" placeholder="Rechercher..." class="search-input">
+            <button class="search-button">
+                <img src="#" alt="Rechercher">
+            </button>
+        </div>
+        <div class="user">
+            <img src="./assets/img/notification.webp" alt="Notifications" class="notification-icon">
+            <img src="./assets/img/user.webp" alt="User" class="user-icon">
+        </div>
+    <?php endif; ?>
+</div>
     
-    <div class="left-navbar bg-primary px-3 py-5" id="side-bar">
+<div class="left-navbar bg-primary px-3 py-5" id="side-bar">
         <div class="nav-item">
             <img src="./assets/img/team.png" alt="Équipe">
             <span>Équipe</span>
         </div>
         <div class="nav-item">
-            <img src="./assets/img/home (2).png" alt="Accueil">
+            <a class="mx-1" href="./index.php"><img src="./assets/img/home (2).png" alt="Accueil"></a>
             <span>Accueil</span>
         </div>
         <div class="nav-item">
-            <img src="./assets/img/setting.png" alt="Paramètres">
+            <img class="my-2" src="./assets/img/setting.png" alt="Paramètres">
             <span>Paramètres</span>
         </div>
         <div class="nav-item">
@@ -38,84 +93,75 @@
             <img src="./assets/img/icons8-message-50.png" alt="Messages">
             <span>Messages</span>
         </div>
-        <div class="nav-item">
+        <div class="nav-item" id='logout-link'>
             <img src="./assets/img/logout.png" alt="Déconnexion">
             <span>Déconnexion</span>
         </div>
-</div>
+    </div>
 
 
 
     <section id="today-task">
-        <div class="flex">
-            <h2>Today's Tasks</h2>
-            <div id="plus"> + </div>
-        </div>
-        <div id="statut">
-            <div class="statuts">Toutes</div>
-            
-            <div class="statuts">En cours</div>
-            <div class="statuts">Terminées</div>
-        </div>
+    <div class="flex">
+        <h2>Today's Tasks</h2>
+        <a href="./new-task.php"> <div id="plus"> + </div></a>
+    </div>
+    <div id="statut">
+        <div class="statuts active" data-statut="Toutes">Toutes</div>
+        <div class="statuts" data-statut="En cours">En cours</div>
+        <div class="statuts" data-statut="Terminées">Terminées</div>
+    </div>
 
-        <section id="tasks">
-            <div class="task">
-                <h2>Créer la maquette du projet</h2>
-                <div class="task-contain">Concevoir l'interface utilisateur pour l'application de gestion de tâches</div>
-                <div class="d-flex">
-                    <div class="task-time-limit">2 jours restants</div>
-                    <div class="who-do">Sarah Miler</div>
-                </div>
+    <section id="tasks">
+        <?php foreach ($tasks_par_statut as $statut => $tasks_du_statut): ?>
+            <div class="task-container <?php if ($statut == 'Toutes') echo 'active'; ?>" data-statut="<?= $statut ?>">
+                <?php if (empty($tasks_du_statut)): ?>
+                    <p>Aucune tâche <?= strtolower($statut) ?> pour le moment.</p>
+                <?php else: ?>
+                    <?php foreach ($tasks_du_statut as $task): ?>
+                        <div class="task mx-19" id="task-<?= htmlspecialchars($task['id_task']) ?>">
+                            <h2><?php echo htmlspecialchars($task['title']); ?></h2>
+                            <div class="task-contain"><?php echo htmlspecialchars($task['description']); ?></div>
+                            <div class="d-flex">
+                                <div class="task-time-limit"><?php echo htmlspecialchars($task['statut_nom']); ?></div>
+                                <div class="who-do">Sarah</div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
-
-            <div class="task">
-                <h2> Réviser les wireframes</h2>
-                <div class="task-contain"> Revoir les wireframes pour le design de l'application mobile et proposer des améliorations.</div>
-                <div class="d-flex">
-                    <div class="task-time-limit-2">7 jours restants</div>
-                    <div class="who-do">John Doe</div>
-                </div>
-            </div>
-
-            <div class="task">
-                <h2> Réviser les wireframes</h2>
-                <div class="task-contain"> Revoir les wireframes pour le design de l'application mobile et proposer des améliorations.</div>
-                <div class="d-flex">
-                    <div class="task-time-limit-2">7 jours restants</div>
-                    <div class="who-do">John Doe</div>
-                </div>
-            </div>
-
-          
-             
-        </section>
+        <?php endforeach; ?>
     </section>
 
+   
 
-    <nav id="bottom-nav" class="navbar fixed-bottom bg-light">
-        <div class="container-fluid justify-content-around">
-          <a class="navbar-brand" href="#">
-            <img src="./assets/img/home.webp" alt="Accueil" class="d-inline-block align-text-top">
-            <span class="d-block text-center">Accueil</span>
-          </a>
-          <a class="navbar-brand" href="#">
-            <img src="./assets/img/to-do-list.webp" alt="Tâches"  class="d-inline-block align-text-top">
-            <span class="d-block text-center">Tâches</span>
-          </a>
-          <div id="plus-2" class="navbar-brand">+</div>
-          <a class="navbar-brand" href="#">
-            <img src="./assets/img/group-chat.webp" alt="Équipe"   class="d-inline-block align-text-top">
-            <span class="d-block text-center">Équipe</span>
-          </a>
-          <a class="navbar-brand" href="#">
-            <img src="./assets/img/settings.webp" alt="Réglages" class="d-inline-block align-text-top">
-            <span class="d-block text-center ">Réglages</span>
-          </a>
-        </div>
+
+     
+
+<nav id="bottom-nav" class="navbar fixed-bottom bg-primary">
+                <div class="container-fluid justify-content-around">
+                <a class="navbar-brand" href="#">
+                    <img src="./assets/img/home (2).png" alt="Accueil" class="d-inline-block align-text-top">
+                    <span class="d-block text-center text-white">Accueil</span>
+                </a>
+                <a class="navbar-brand" href="#">
+                    <img src="./assets/img/Capture d'écran 2025-01-24 111742.png" alt="Tâches"  class="d-inline-block align-text-top">
+                    <span class="d-block text-center text-white">Tâches</span>
+                </a>
+                <div id="plus-2" class="navbar-brand bg-white text-primary">+</div>
+                <a class="navbar-brand" href="#">
+                    <img src="./assets/img/team.png" alt="Équipe"   class="d-inline-block align-text-top">
+                    <span class="d-block text-center text-white">Équipe</span>
+                </a>
+                <a class="navbar-brand" href="#">
+                    <img src="./assets/img/setting.png" alt="Réglages" class="d-inline-block align-text-top">
+                    <span class="d-block text-center text-white">Réglages</span>
+                </a>
+                </div>
       </nav>
 
 
-      <footer class="bg-dark text-white mt-5 p-4 text-center  " id='footer'>
+      <footer class="bg-dark text-white py-3 text-center  " id='footer'>
         <p>&copy; 2025 TaskCollab. Tous droits réservés.</p>
         <p><a href="https://www.example.com/privacy" class="text-white">Politique de confidentialité</a> | <a href="https://www.example.com/terms" class="text-white">Termes et conditions</a></p>
         <div class="mt-2">
