@@ -1,5 +1,7 @@
 let navBar = document.getElementById('bottom-nav');
 let footerNone = document.getElementById('footer');
+let editForm = document.getElementsByClassName('edit-form') ;
+
 
 const statutDivs = document.querySelectorAll('#statut .statuts');
 const taskContainers = document.querySelectorAll('#tasks .task-container');
@@ -17,6 +19,13 @@ console.log(deconnexion);
 function showEditForm(taskId) {
     document.getElementById('edit-form-' + taskId).style.display = 'block';
 }
+
+window.addEventListener('rezise', function(){
+    if(window.innerWidth < 780){
+        editForm.style.marginRight = '555px';
+    }
+
+})
 
 function hideEditForm(taskId) {
     document.getElementById('edit-form-' + taskId).style.display = 'none';
@@ -47,10 +56,11 @@ window.addEventListener('load', function() {
     }
 });
 
+
+
+
+
 // statut
-
-
-
 
 statutDivs.forEach(statutDiv => {
     statutDiv.addEventListener('click', () => {
@@ -61,9 +71,9 @@ statutDivs.forEach(statutDiv => {
 
         taskContainers.forEach(container => {
             if (container.dataset.statut === statut) {
-                container.style.display = 'block'; // Utiliser style.display
+                container.style.display = 'block'; 
             } else {
-                container.style.display = 'none'; // Utiliser style.display
+                container.style.display = 'none'; 
             }
         });
     });

@@ -110,7 +110,7 @@ try {
     <link rel="stylesheet" href="./assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-       
+
     </style>
 </head>
 
@@ -132,7 +132,7 @@ try {
             <div class="search-container">
                 <input type="search" placeholder="Rechercher..." class="search-input">
                 <button class="search-button">
-                    <img src="#" alt="Rechercher">
+                    <img src="./assets/img/search_7693724.png" alt="Rechercher">
                 </button>
             </div>
             <div class="user">
@@ -149,7 +149,7 @@ try {
         </div>
         <div class="nav-item">
             <a class="mx-1" href="./index.php"><img src="./assets/img/home (2).png" alt="Accueil">
-            <span>Accueil</span></a>
+                <span>Accueil</span></a>
         </div>
         <div class="nav-item">
             <img class="my-2" src="./assets/img/setting.png" alt="Paramètres">
@@ -170,95 +170,100 @@ try {
     </div>
 
     <nav id="bottom-nav" class="navbar fixed-bottom bg-primary">
-                <div class="container-fluid justify-content-around">
-                <a class="navbar-brand" href="#">
-                    <img src="./assets/img/home (2).png" alt="Accueil" class="d-inline-block align-text-top">
-                    <span class="d-block text-center text-white">Accueil</span>
-                </a>
-                <a class="navbar-brand" href="#">
-                    <img src="./assets/img/Capture d'écran 2025-01-24 111742.png" alt="Tâches"  class="d-inline-block align-text-top">
-                    <span class="d-block text-center text-white">Tâches</span>
-                </a>
-                <div id="plus-2" class="navbar-brand bg-white text-primary">+</div>
-                <a class="navbar-brand" href="#">
-                    <img src="./assets/img/team.png" alt="Équipe"   class="d-inline-block align-text-top">
-                    <span class="d-block text-center text-white">Équipe</span>
-                </a>
-                <a class="navbar-brand" href="#">
-                    <img src="./assets/img/setting.png" alt="Réglages" class="d-inline-block align-text-top">
-                    <span class="d-block text-center text-white">Réglages</span>
-                </a>
-                </div>
-      </nav>
+        <div class="container-fluid justify-content-around">
+            <a class="navbar-brand" href="./index.php">
+                <img src="./assets/img/home (2).png" alt="Accueil" class="d-inline-block align-text-top">
+                <span class="d-block text-center text-white">Accueil</span>
+            </a>
+            <a class="navbar-brand" href="#">
+                <img src="./assets/img/Capture d'écran 2025-01-24 111742.png" alt="Tâches" class="d-inline-block align-text-top">
+                <span class="d-block text-center text-white">Tâches</span>
+            </a>
+            <div id="plus-2" class="navbar-brand bg-white text-primary">+</div>
+            <a class="navbar-brand" href="#">
+                <img src="./assets/img/team.png" alt="Équipe" class="d-inline-block align-text-top">
+                <span class="d-block text-center text-white">Équipe</span>
+            </a>
+            <a class="navbar-brand" href="#">
+                <img src="./assets/img/setting.png" alt="Réglages" class="d-inline-block align-text-top">
+                <span class="d-block text-center text-white">Réglages</span>
+            </a>
+        </div>
+    </nav>
 
 
-    <div class="custom-container">
-        <div class="container mt-5 mx-10">
-            <div class="card shadow-lg">
-                <div class="card-body">
-                    <h2 class="card-title mb-4">Nouvelle tâche</h2>
+    <div class="padding">
+        <div class="custom-container">
+            <div class="container mt-5 mx-10">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Nouvelle tâche</h2>
 
-                    <form action="new-task.php" method="POST" id="new-task">
-                        <div class="mb-3">
-                            <label for="titre" class="form-label"></label>
-                            <input type="text" class="form-control" id="titre" name="titre" placeholder="Task Title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label"></label>
-                            <input type="text" class="form-control" id="description" name="description" placeholder="Task Description" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="due_date" class="form-label">Date d'échéance :</label>
-                            <input type="date" class="form-control" id="due_date" name="due_date">
-                        </div>
-                        <button type="submit" class="add-task btn btn-primary w-100">Ajouter la tâche</button>
-                    </form>
+                        <form action="new-task.php" method="POST" id="new-task">
+                            <div class="mb-3">
+                                <label for="titre" class="form-label"></label>
+                                <input type="text" class="form-control" id="titre" name="titre" placeholder="Task Title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label"></label>
+                                <input type="text" class="form-control" id="description" name="description" placeholder="Task Description" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="due_date" class="form-label">Date d'échéance :</label>
+                                <input type="date" class="form-control" id="due_date" name="due_date">
+                            </div>
+                            <button type="submit" class="add-task btn btn-primary w-100">Ajouter la tâche</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <section class='' id="tasks">
+            <?php if (empty($tasks)): ?>
+                <p>Aucune tâche pour le moment.</p>
+            <?php else: ?>
+                <?php foreach ($tasks as $task): ?>
+                    <div class="task mx-19" id="task-<?php echo htmlspecialchars($task['id_task']); ?>">
+                        <h2><?php echo htmlspecialchars($task['title']); ?></h2>
+                        <div class="task-contain"><?php echo htmlspecialchars($task['description']); ?></div>
+                        <div class="d-flex">
+                            <div class="task-time-limit">
+                                <?php if (isset($task['nom_statut'])): ?>
+                                    <?php echo htmlspecialchars($task['nom_statut']); ?>
+                                <?php else: ?>
+                                    Statut non défini
+                                <?php endif; ?>
+                            </div>
+                            <div class="who-do">John Doe</div>
+                        </div>
+
+                        <button onclick="showEditForm(<?php echo htmlspecialchars($task['id_task']); ?>)" class="modifier">Modifier</button>
+                        <form id="edit-form-<?php echo htmlspecialchars($task['id_task']); ?>" class="edit-form" method="POST" action="">
+                            <input type="hidden" name="task_id" value="<?php echo htmlspecialchars($task['id_task']); ?>">
+                            <input type="text" name="new_title" placeholder="Nouveau titre" value="<?php echo htmlspecialchars($task['title']); ?>" required><br>
+                            <input type="text" name="new_description" placeholder="Nouvelle description" value="<?php echo htmlspecialchars($task['description']); ?>" required><br>
+
+                            <select name="new_status">
+                                <option value="1" <?php if (isset($task['id_statut']) && $task['id_statut'] == 1) echo 'selected'; ?>>En cours</option>
+                                <option value="2" <?php if (isset($task['id_statut']) && $task['id_statut'] == 2) echo 'selected'; ?>>Terminée</option>
+                            </select><br>
+                            <div class="d-flex">
+                            <button type="submit">Enregistrer les modifications</button>
+                            <button type="button" onclick="hideEditForm(<?php echo htmlspecialchars($task['id_task']); ?>)">Annuler</button>
+                        </form>
+
+                        <form method="POST" action="">
+                            <input type="hidden" name="delete_task_id" value="<?php echo htmlspecialchars($task['id_task']); ?>">
+                            <button type="submit" id='supprimer'>Supprimer</button>
+                        </form>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </section>
     </div>
 
-    <section class='px-5' id="tasks">
-        <?php if (empty($tasks)): ?>
-            <p>Aucune tâche pour le moment.</p>
-        <?php else: ?>
-            <?php foreach ($tasks as $task): ?>
-                <div class="task mx-19" id="task-<?php echo htmlspecialchars($task['id_task']); ?>">
-                    <h2><?php echo htmlspecialchars($task['title']); ?></h2>
-                    <div class="task-contain"><?php echo htmlspecialchars($task['description']); ?></div>
-                    <div class="d-flex">
-                        <div class="task-time-limit">
-                            <?php if (isset($task['nom_statut'])): ?>
-                                <?php echo htmlspecialchars($task['nom_statut']); ?>
-                            <?php else: ?>
-                                Statut non défini
-                            <?php endif; ?>
-                        </div>
-                        <div class="who-do">John Doe</div>
-                    </div>
-
-                    <button onclick="showEditForm(<?php echo htmlspecialchars($task['id_task']); ?>)" class="modifier">Modifier</button>
-                    <form id="edit-form-<?php echo htmlspecialchars($task['id_task']); ?>" class="edit-form" method="POST" action="">
-                        <input type="hidden" name="task_id" value="<?php echo htmlspecialchars($task['id_task']); ?>">
-                        <input type="text" name="new_title" placeholder="Nouveau titre" value="<?php echo htmlspecialchars($task['title']); ?>" required><br>
-                        <input type="text" name="new_description" placeholder="Nouvelle description" value="<?php echo htmlspecialchars($task['description']); ?>" required><br>
-
-                        <select name="new_status">
-                            <option value="1" <?php if (isset($task['id_statut']) && $task['id_statut'] == 1) echo 'selected'; ?>>En cours</option>
-                            <option value="2" <?php if (isset($task['id_statut']) && $task['id_statut'] == 2) echo 'selected'; ?>>Terminée</option>
-                        </select><br>
-                        <button type="submit">Enregistrer les modifications</button>
-                        <button type="button" onclick="hideEditForm(<?php echo htmlspecialchars($task['id_task']); ?>)">Annuler</button>
-                    </form>
-
-                    <form method="POST" action="">
-                        <input type="hidden" name="delete_task_id" value="<?php echo htmlspecialchars($task['id_task']); ?>">
-                        <button type="submit" id='supprimer'>Supprimer</button>
-                    </form>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </section>
 
     <footer class="bg-dark text-white mt-5 p-4 text-center  " id='footer'>
         <p>&copy; 2025 TaskCollab. Tous droits réservés.</p>

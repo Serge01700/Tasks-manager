@@ -16,6 +16,7 @@
 
 .top-content {
     display: flex;
+    padding-left: 55px;
     align-items: center;
     gap: 1rem;
 }
@@ -29,7 +30,12 @@
     height: 150px;
     }
     .user {
+       
         height: 10px;
+    }
+    .user img {
+        height: 15px;
+        width: 15px;
     }
 }
 
@@ -62,7 +68,8 @@
 
 .user {
     display: flex;
-    align-items: center;
+    text-align: center;
+    justify-content: center;
     gap: 1rem;
 }
 
@@ -81,9 +88,10 @@
         gap: 1rem; 
         padding: 1rem;
         max-height: 140px;
-        margin-right: 55px;
+
     }
     .top-content {
+        margin-right: 55px;
       justify-content: center;
     }
 
@@ -101,8 +109,9 @@
 }
 
 .user img {
-    height: 25px;
-    width: 25px;
+    height: 17px;
+    width: 17px;
+   
 }
 
 
@@ -134,10 +143,11 @@
 }
 
 #today-task {
-    height: 550px;
-    border-top: 1px solid #E5E7EB;
+    min-height: 120vh;
+    border-top: 1px solid #ebe5e5;
     padding: 20px;
 }
+
 
 #statut {
     display: grid;
@@ -192,7 +202,14 @@
     #today-task {
         flex-direction: row;
         justify-content: space-between;
-        padding-left : 155px;
+        padding-left: 75px;
+    }
+}
+
+@media (min-width: 781px) {
+    .padding{
+       
+        padding-left : 55px;
     }
 }
 
@@ -368,12 +385,18 @@ body {
     min-height: 120vh;
 }
 
-footer {
+#footer {
     position: relative;
-    top: 350px;
+    bottom: 0;
     width: 100%;
-    z-index: 50;
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 50px; /* Ajouter un peu d'espace au-dessus du footer pour éviter qu'il soit collé au bas immédiatement */
 }
+
+
 
 #footer ul,
 #footer p {
@@ -410,6 +433,7 @@ New task */
 .nav-item {
     line-height: 10px; 
     cursor: pointer;
+    
     white-space: nowrap;
     
 }
@@ -428,7 +452,8 @@ New task */
 .nav-item > span {
     visibility: hidden;
     transition: 0.5s ease;
-    line-height: 55px;
+    line-height: 75px;
+   
 }
 
 .nav-item:hover {
@@ -439,12 +464,11 @@ New task */
     border-radius: 15px;
     background-color:#031749;
     width: 100px;
+    height: 55px;
     
     
 }
-#body{
-    padding-left: 50px;
-}
+
 .nav-item:hover span {
     visibility: visible;
     transition: 0.5s ease;
@@ -455,7 +479,7 @@ New task */
 .custom-container {
     max-height: 400px;
     max-width: 810px;
-    margin-left: 100px;
+    margin-left: 50px;
 }
 
 
@@ -463,13 +487,13 @@ New task */
     display: none;
     position: fixed; 
     top: 50%;
-    left: 50%;
+    left: 17%;
     z-index: 1000;
     margin: 20px 0;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
 }
 .edit-form input {
     width: 100%;
@@ -501,6 +525,7 @@ New task */
     background-color: #007bff;
     color: #fff;
     z-index: 0;
+    padding: 5px;
     border-radius: 5px;
     height: 25px;
     border: none;
@@ -530,7 +555,7 @@ New task */
 @media (max-width:680px) {
     .custom-container {
         flex-basis: 100%;
-        margin-left: 19px;
+        margin-left: 10px;
         max-width: 100%;
     }
 }
@@ -544,11 +569,25 @@ New task */
         flex-basis: 100%;
         margin-left: 30px;
         max-width: 100%;
-        height: 110px;
+        height: 139px;
+        margin-right: 15px;
     }
 
 }
 
+@media (max-width : 780px) {
+    .task h2 {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    .task-contain {
+        font-size: 0.7rem;
+    }
+    .task-time-limit ,
+    .who-do {
+        font-style: 0.7rem;
+    }
+}
 
 @media (max-width: 780px) {
     body {

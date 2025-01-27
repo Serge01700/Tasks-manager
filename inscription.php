@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h1>TaskCollab</h1>
     <div class="user">
         <img src="./assets/img/notification.webp" alt="Notifications">
-        <a href=""><img src="./assets/img/logo.png" alt="User"></a>
+        <a href=""><img class="d-flex" src="./assets/img/logo.png" alt="User"></a>
     </div>
 </div>
 

@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         <?php else: ?>
             <div class="top-content">
-                <img src="./assets/img/logo.png" alt="Logo" class="logo">
+                <a href="./inscription.php"><img src="./assets/img/logo.png" alt="Logo" class="logo"></a>
                 <h1>TaskCollab</h1>
             </div>
             <div class="search-container">
